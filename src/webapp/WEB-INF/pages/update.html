@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update User</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        select, input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            margin: 5px;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+<h2>Update User</h2>
+<form th:action="@{/updateUser}" method="get">
+    <label for="userSelect">Select user:</label>
+    <select id="userSelect" name="id" onchange="this.form.submit()">
+        <option value="">---select user---</option>
+        <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.name}"></option>
+    </select>
+</form>
+
+<div th:if="${selectedUser}">
+    <form th:action="@{/saveUpdate}" method="post">
+        <input type="hidden" name="id" th:value="${selectedUser.id}">
+        <label>Name:
+            <input type="text" name="name" th:value="${selectedUser.name}" required>
+        </label>
+        <label>Age:
+            <input type="number" name="age" th:value="${selectedUser.age}" min="0" max="150" required>
+        </label>
+        <label>Salary:
+            <input type="number" name="salary" th:value="${selectedUser.salary}" min="0" required>
+        </label>
+        <input type="submit" value="Update">
+        <input type="submit" formaction="/deleteUser" formmethod="post" value="Delete">
+    </form>
+</div>
+</body>
+</html>

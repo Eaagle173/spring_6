@@ -9,15 +9,12 @@ import java.util.Objects;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
-    @Column
     private String name;
 
-    @Column
     private int age;
 
-    @Column
     private int salary;
 
     public User() {
@@ -30,7 +27,7 @@ public class User {
         this.salary = salary;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

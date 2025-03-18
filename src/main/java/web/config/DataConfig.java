@@ -14,7 +14,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,9 +50,8 @@ public class DataConfig {
     }
 
     private Properties getHibernateProperties() {
-        try {
-            Properties properties = new Properties();
-            InputStream is = this.getClass().getClassLoader().getResourceAsStream("hibernate.properties");
+        Properties properties = new Properties();
+        try (InputStream is = this.getClass().getClassLoader().getResourceAsStream("hibernate.properties")) {
             properties.load(is);
             return properties;
         } catch (IOException e) {
@@ -71,10 +69,5 @@ public class DataConfig {
     @Bean
     public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
-    }
-
-    @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
-        return new JpaTransactionManager(emf);
     }
 }
